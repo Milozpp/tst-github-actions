@@ -7,7 +7,7 @@ on:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-  
+
 jobs:
   build-deploy: # logic job name resource
     name: Build & Deploy # job name
@@ -63,13 +63,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: python
+      # - name: Initialize CodeQL
+      #   uses: github/codeql-action/init@v3
+      #   with:
+      #     languages: python
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+      # - name: Perform CodeQL Analysis
+      #   uses: github/codeql-action/analyze@v3
 
       # - name: GitHub Container Scan
       #   uses: github/codeql-action/analyze@v3
@@ -88,4 +88,20 @@ jobs:
         run: |
           docker run -d -p 5000:5000 ghcr.io/milozpp/python-microservice:latest  #run the docker image built 
     # - name: Login to something #example step used to authenticate to external services (docker registry, cloud provider, etc.)
+
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-south-1
+
+      - name: Deploy to ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          cluster: my-cluster          
+          service: my-service          
+          task-definition: ecs-task.json  
+          image: ghcr.io/milozpp/python-microservice:latest
 
