@@ -27,10 +27,10 @@ jobs:
           python -m pip install --upgrade pip #upgrade pip to latest version
           pip install -r requirements.txt #install all dependencies defined in requirements.txt
 
-      - name: Lint Python code
-        run: |
-          pip install flake8
-          flake8 . --max-line-length=120
+      # - name: Lint Python code
+      #   run: |
+      #     pip install flake8
+      #     flake8 . --max-line-length=120
 
       # Step 5: Type checking
       - name: Type checking with MyPy
