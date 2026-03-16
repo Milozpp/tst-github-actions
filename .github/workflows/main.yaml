@@ -15,7 +15,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-      security-events: read
+      security-events: write
     steps:
       - name: Checkout code #step used to download code from github repository and clone it to runtime above indicated to performs all step needed
         uses: actions/checkout@v3 #uses keyword indicated which action type needs to be execute - all available actions are in github marketplace
@@ -63,18 +63,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Initialize CodeQL
-      #   uses: github/codeql-action/init@v3
-      #   with:
-      #     languages: python
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python
 
-      # - name: Perform CodeQL Analysis
-      #   uses: github/codeql-action/analyze@v3
-
-      # - name: GitHub Container Scan
-      #   uses: github/codeql-action/analyze@v3
-      #   with:
-      #     category: "security-and-quality"
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
       
       - name: Build and push Docker Image #step used to build docker image of the application
         uses: docker/build-push-action@v5        
