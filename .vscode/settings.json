@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://www.schemastore.org/github-action.json": "file:///Users/m.zappulla/Desktop/tst-github-actions/.actions/workflows/main.yml"
+    }
+}

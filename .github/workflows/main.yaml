@@ -1,0 +1,44 @@
+name: Build & Deploy #github workflow name
+
+on:
+  push:
+    branches: #github workflow trigger on push to following branchs
+      - main
+
+jobs:
+  build-deploy: # logic job name resource
+    name: Build & Deploy # job name
+    runs-on: ubuntu-latest #runtime where to build job
+    steps:
+      - name: Checkout code #step used to download code from github repository and clone it to runtime above indicated to performs all step needed
+        uses: actions/checkout@v3 #uses keyword indicated which action type needs to be execute - all available actions are in github marketplace
+
+      - name: Setup Python #step used to install and configure python runtime environment
+        uses: actions/setup-python@v4 #official github action used to install python in the runtime
+        with:
+          python-version: '3.11' #python version used to execute application and tests
+          cache: 'pip' #enable dependency caching to speed up pipeline execution
+    
+      - name: Install dependencies #step used to install application dependencies needed to run the application and tests
+        run: |
+          python -m pip install --upgrade pip #upgrade pip to latest version
+          pip install -r requirements.txt #install all dependencies defined in requirements.txt
+    
+      - name: Unit Tests #step used to execute unit test in runtime
+        run: |
+          pytest tests/ #execute unit test located in tests/ folder
+      
+      - name: Build the application #step used to build the application
+        run: |
+          echo "Building the application..." #python applications usually do not require compilation step like java, placeholder build step
+    
+      - name: Build Docker Image #step used to build docker image of the application
+        uses: actions/build-push-action@v2 #docker action used to build (and optionally push) docker images
+        with: 
+          context: . #context of the docker build, in this case the root of the repository
+          dockerfile: Dockerfile #dockerfile used to build the image
+          push: false #true to push the image to docker registry
+          #tags: example/my-python-microservice:latest #tag used to identify docker image in registry
+
+    # - name: Login to something #example step used to authenticate to external services (docker registry, cloud provider, etc.)
+
