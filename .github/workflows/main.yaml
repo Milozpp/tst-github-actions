@@ -9,6 +9,9 @@ jobs:
   build-deploy: # logic job name resource
     name: Build & Deploy # job name
     runs-on: ubuntu-latest #runtime where to build job
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout code #step used to download code from github repository and clone it to runtime above indicated to performs all step needed
         uses: actions/checkout@v3 #uses keyword indicated which action type needs to be execute - all available actions are in github marketplace
