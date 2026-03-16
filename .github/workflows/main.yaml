@@ -45,10 +45,10 @@ jobs:
           context: . #context of the docker build, in this case the root of the repository
           dockerfile: Dockerfile #dockerfile used to build the image
           push: true #true to push the image to docker registry
-          tags: ghcr.io/${{ github.repository_owner }}/python-microservice:latest #tag used to identify docker image in registry
+          tags: ghcr.io/milozpp/python-microservice:latest #tag used to identify docker image in registry - ${{ github.repository_owner }}
     
       - name: Run container
         run: |
-          docker run -d -p 5000:5000 ghcr.io/${{ github.repository_owner }}/python-microservice:latest  #run the docker image built 
+          docker run -d -p 5000:5000 ghcr.io/milozpp/python-microservice:latest  #run the docker image built 
     # - name: Login to something #example step used to authenticate to external services (docker registry, cloud provider, etc.)
 
