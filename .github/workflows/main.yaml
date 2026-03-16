@@ -26,6 +26,23 @@ jobs:
         run: |
           python -m pip install --upgrade pip #upgrade pip to latest version
           pip install -r requirements.txt #install all dependencies defined in requirements.txt
+
+      - name: Lint Python code
+        run: |
+          pip install flake8
+          flake8 . --max-line-length=120
+
+      # Step 5: Type checking
+      - name: Type checking with MyPy
+        run: |
+          pip install mypy
+          mypy .
+
+      # Step 6: Security analysis
+      - name: Security scan with Bandit
+        run: |
+          pip install bandit
+          bandit -r .
     
       - name: Unit Tests #step used to execute unit test in runtime
         run: |
@@ -49,7 +66,12 @@ jobs:
           dockerfile: Dockerfile #dockerfile used to build the image
           push: true #true to push the image to docker registry
           tags: ghcr.io/milozpp/python-microservice:latest #tag used to identify docker image in registry - ${{ github.repository_owner }}
-    
+
+      - name: Scan Docker Image
+        uses: docker/scan-action@v1
+        with:
+          image: ghcr.io/milozpp/python-microservice:latest
+          
       - name: Run container
         run: |
           docker run -d -p 5000:5000 ghcr.io/milozpp/python-microservice:latest  #run the docker image built 
