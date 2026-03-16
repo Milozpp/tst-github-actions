@@ -5,6 +5,9 @@ on:
     branches: #github workflow trigger on push to following branchs
       - main
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  
 jobs:
   build-deploy: # logic job name resource
     name: Build & Deploy # job name
