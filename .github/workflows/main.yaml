@@ -68,10 +68,10 @@ jobs:
           tags: ghcr.io/milozpp/python-microservice:latest #tag used to identify docker image in registry - ${{ github.repository_owner }}
 
       - name: Scan Docker Image
-        uses: docker/scan-action@v1
+        uses: docker/scan-action@v0.14.0
         with:
           image: ghcr.io/milozpp/python-microservice:latest
-          
+
       - name: Run container
         run: |
           docker run -d -p 5000:5000 ghcr.io/milozpp/python-microservice:latest  #run the docker image built 
