@@ -32,17 +32,23 @@ jobs:
         run: |
           echo "Building the application..." #python applications usually do not require compilation step like java, placeholder build step
     
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
       - name: Build Docker Image #step used to build docker image of the application
         uses: docker/build-push-action@v5        
         with: 
           context: . #context of the docker build, in this case the root of the repository
           dockerfile: Dockerfile #dockerfile used to build the image
-          push: false #true to push the image to docker registry
-          tags: python-microservice:latest #tag used to identify docker image in registry
-      
+          push: true #true to push the image to docker registry
+          tags: ghcr.io/${{ github.repository_owner }}/python-microservice:latest #tag used to identify docker image in registry
+    
       - name: Run container
         run: |
-          docker run -d -p 5000:5000 python-microservice-latest #run the docker image built in the previous step, exposing port 5000
-
+          docker run -d -p 5000:5000 ghcr.io/${{ github.repository_owner }}/python-microservice:latest  #run the docker image built 
     # - name: Login to something #example step used to authenticate to external services (docker registry, cloud provider, etc.)
 
