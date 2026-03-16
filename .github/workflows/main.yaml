@@ -67,10 +67,10 @@ jobs:
           push: true #true to push the image to docker registry
           tags: ghcr.io/milozpp/python-microservice:latest #tag used to identify docker image in registry - ${{ github.repository_owner }}
 
-      - name: Scan Docker Image
-        uses: docker/scan-action@v0.14.0
+      - name: GitHub Container Scan
+        uses: github/codeql-action/analyze@v3
         with:
-          image: ghcr.io/milozpp/python-microservice:latest
+          category: "security-and-quality"
 
       - name: Run container
         run: |
